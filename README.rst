@@ -22,8 +22,9 @@ Also, it can be used for image file de-duplication (currently based on hash dete
 USAGE
 ===================
 
-1. edit ``picGaz.conf.yml``
-2. execute ``picGaz.py``
+#.  ``pip install ruamel.yaml``
+#. edit ``picGaz.conf.yml``
+#. execute ``picGaz.py``
 
 Thoughts
 ========
