@@ -213,7 +213,7 @@ class UNIQUE_PIC_COPY():
             <enter> or others to exit.
         """
         prompt = input(f'{self.dst} files will be re-hashing and might be renamed, type f"{word}" to continue, <enter> or any other keys to break and exit:')
-        if prompt != 'yEs':
+        if prompt != word:
             logging.error('ERROR: User break the process and exited after inputting {prompt}.')
             exit()
 
