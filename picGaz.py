@@ -43,6 +43,19 @@ def hashFile(fp, *, buffer_size=20_000_000, algorithm='md5') -> str:
 
 
 def picExt(fn: os.PathLike) -> str:
+    """
+    Return a pic files type
+
+    Parameters
+    ----------
+    fn : os.PathLike
+        A given file path
+
+    Returns
+    -------
+    str
+        CAPITAL extension name.
+    """
     fn = Path(fn)
     try:
         ext = (Image.open(fn)).format
@@ -55,13 +68,13 @@ def picExt(fn: os.PathLike) -> str:
 class UNIQUE_PIC_COPY():
     def __init__(self, plan: dict):
         """
-        find unique pictures in the src dir(s),
+        Find unique pictures in the src dir(s),
         and copy them to the destination dir
 
         Parameters
         ----------
         plans : dict
-            a configuration set from ./conf.yml
+            A configuration set from ./conf.yml
         """
 
         self.cfg = plan  # see the specific schema of picGaz.conf.yml samples
@@ -106,7 +119,7 @@ class UNIQUE_PIC_COPY():
         Returns
         -------
         int
-            hash file status:
+            Hash file status:
             > 1 : more than 1 file exists, need manually operations.
             1   : ok
             -1  : file changed unexpectedly
@@ -191,12 +204,12 @@ class UNIQUE_PIC_COPY():
 
     def protect(self, word: str):
         """
-        protect from damaging files in the next steps with a prompt word.
+        Protect from damaging files in the next steps with a prompt word.
 
         Parameters
         ----------
         word : str
-            the given protect word as a prompt, if correct, then continue.
+            The given protect word as a prompt, if correct, then continue.
             <enter> or others to exit.
         """
         prompt = input(f'{self.dst} files will be re-hashing and might be renamed, type f"{word}" to continue, <enter> or any other keys to break and exit:')
@@ -234,6 +247,19 @@ class UNIQUE_PIC_COPY():
         logging.info(f'data file dump successfully. {self.data_file}')
 
     def picEval(self, file: Path) -> dict:
+        """
+        Evaluate a given pic files status.
+
+        Parameters
+        ----------
+        file : Path
+            The given files's path.
+
+        Returns
+        -------
+        dict
+            Status dict, see the codes to determine what they are and you can modify to add more data.
+        """
         r = {}
         try:
             if file.exists():

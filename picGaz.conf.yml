@@ -6,14 +6,19 @@ meta: |
   and just modify the calling style to fit it.
 
   note that if you write plans like this:
-    plan_name:
-      src: ...
+
+  plans:
+    - plan_name:
+        src: ...
     
-    you should write the calling like this:
-      for k,v in p.items():
-        UNIQUE_PIC_COPY(v)
+  you should write the calling like this:
+
+  for p in config['plans']:
+    for k,v in p.items():
+      UNIQUE_PIC_COPY(v)
         ...
-    
+
+  it is ugly... so the following style is recommended.    
 
 plans:
   - name: win10_log_pic
