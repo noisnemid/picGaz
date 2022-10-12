@@ -1,0 +1,37 @@
+meta: |
+  this is a config file for python script for win10_login_screen_picture
+  gathering version 3.0
+
+  feel free to write the plan schema inside a list or dict
+  and just modify the calling style to fit it.
+
+  note that if you write plans like this:
+    plan_name:
+      src: ...
+    
+    you should write the calling like this:
+      for k,v in p.items():
+        UNIQUE_PIC_COPY(v)
+        ...
+    
+
+plans:
+  - name: win10_log_pic
+    src: ~/AppData/Local/Packages/Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy/LocalState/Assets
+    dst: ~/Downloads/w10logpics
+    hash_algorithm: sha256
+    filters:
+      # if pictures' minimal border is >= this size, then it will be copied.
+      # that's because windows 10's login pictures has two dimensions within the asset folder.
+      # unit: pixel
+      min_border_px: 1024
+
+  - name: test
+    src: ~/Desktop/srcTest
+    dst: ~/Downloads/w10logpics
+    hash_algorithm: sha256
+    filters:
+      # if pictures' minimal border is >= this size, then it will be copied.
+      # that's because windows 10's login pictures has two dimensions within the asset folder.
+      # unit: pixel
+      min_border_px: 1024
