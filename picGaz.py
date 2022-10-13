@@ -24,6 +24,7 @@ from traceback import format_exc
 
 VERSION = '20221012'
 
+
 def hashFile(fp, *, buffer_size=20_000_000, algorithm='md5') -> str:
     m = getattr(hashlib, algorithm)()
     file_size = os.path.getsize(fp)
@@ -84,22 +85,22 @@ class UNIQUE_PIC_COPY():
         self.data = {}
         self.data_file = ''
 
-        self.preCheck()
+        self.ready = self.preCheck()
 
-    def preCheck(self):
+    def preCheck(self) -> bool:
         """
         Pre-check the destination status, i.e, whether a status file exists and ok.
         If not, it will be generated.
         """
         logging.info(f'{"*"*30}\nNew Task Pre-checking...')
-
-        for k,v in self.cfg.items():
+        ck = False
+        for k, v in self.cfg.items():
             logging.info(f'{k} : {v}')
 
         if not self.src.exists():
             logging.error(f'SRC DOES NOT EXIST, TASK SKIPPED! {self.src}')
-            return
-        
+            return ck
+
         if not self.dst.exists():
             logging.warning(f'{self.dst} does not exist, creating...')
             os.makedirs(self.dst.absolute(), exist_ok=True)
@@ -108,13 +109,15 @@ class UNIQUE_PIC_COPY():
         match hash_status:
             case 0:
                 self.genHashFile()
+                ck = True
             case 1:
-                ...
+                ck = True
             case _:
                 if hash_status > 1 or hash_status < 0:
-                    logging.error(f'Exit Code with HASH STATUS {hash_status}!')
-                    exit()
-        logging.info('Pre-Check successfully!')
+                    logging.error(f'HASH FILE ERROR {hash_status}!')
+
+        logging.info('Pre-Check done, result {ck}')
+        return ck
 
     def hashFileCheck(self) -> int:
         """
@@ -224,25 +227,26 @@ class UNIQUE_PIC_COPY():
             exit()
 
     def do(self):
-        logging.info(f'Copying pics: {self.src} -> {self.dst} ...')
-        _count = 0
-        for i in os.listdir(self.src):
-            f = self.src / i
-            f_sta = self.picEval(f)
-            if f_sta != {}:
-                h = f_sta['stem']
-                if h not in self.data:
-                    nf = self.dst / f'{h}.{f_sta["file_type"]}'
-                    logging.info(f'copying {f} --> {nf}')
-                    shutil.copy(f, nf)
-                    # key data adding...
-                    self.data[h] = f_sta
-                    _count += 1
-                    logging.info(f'{_count} new files added.')
+        if self.ready:
+            logging.info(f'Copying pics: {self.src} -> {self.dst} ...')
+            _count = 0
+            for i in os.listdir(self.src):
+                f = self.src / i
+                f_sta = self.picEval(f)
+                if f_sta != {}:
+                    h = f_sta['stem']
+                    if h not in self.data:
+                        nf = self.dst / f'{h}.{f_sta["file_type"]}'
+                        logging.info(f'copying {f} --> {nf}')
+                        shutil.copy(f, nf)
+                        # key data adding...
+                        self.data[h] = f_sta
+                        _count += 1
+                        logging.info(f'{_count} new files added.')
 
-        logging.info(f'{_count} file(s) added.')
-        if _count > 0:
-            self.dump()
+            logging.info(f'{_count} file(s) added.')
+            if _count > 0:
+                self.dump()
 
     def dump(self):
         with open(self.data_file, 'w', encoding='utf-8', newline='\n') as yw:
