@@ -14,7 +14,7 @@ yaml.indent(mapping=2, sequence=4, offset=2)
 import logging
 logging.basicConfig(
     # filename= Path(__file__).parent/(Path(__file__).stem+".log"),
-    level=logging.DEBUG,
+    level=logging.INFO,
     filemode='a',
     encoding='utf8',
     format='%(asctime)s - %(filename)s, line:%(lineno)d > %(levelname)s: %(message)s',
@@ -22,9 +22,7 @@ logging.basicConfig(
 
 from traceback import format_exc
 
-
 VERSION = '20221012'
-
 
 def hashFile(fp, *, buffer_size=20_000_000, algorithm='md5') -> str:
     m = getattr(hashlib, algorithm)()
@@ -93,9 +91,13 @@ class UNIQUE_PIC_COPY():
         Pre-check the destination status, i.e, whether a status file exists and ok.
         If not, it will be generated.
         """
+        logging.info(f'{"*"*30}\nNew Task Pre-checking...')
+
+        for k,v in self.cfg.items():
+            logging.info(f'{k} : {v}')
 
         if not self.dst.exists():
-            logging.warning(f'{self.dst} not exist, creating...')
+            logging.warning(f'{self.dst} does not exist, creating...')
             os.makedirs(self.dst.absolute(), exist_ok=True)
 
         hash_status = self.hashFileCheck()
@@ -289,3 +291,5 @@ if __name__ == '__main__':
     for p in config['plans']:
         sanction = UNIQUE_PIC_COPY(p)
         sanction.do()
+
+    input('<Enter> to exit...')

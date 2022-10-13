@@ -19,10 +19,12 @@ After abstracting the above steps, it can be applied to the collection of images
 
 Also, it can be used for image file de-duplication (currently based on hash determination).
 
-USAGE
+Usage
 ===================
 
-#.  ``pip install ruamel.yaml``
+Python 3.10.x is needed because the script is using ``match`` statements.
+
+#.  ``pip install ruamel.yaml pillow``
 #. edit ``picGaz.conf.yml``
 #. execute ``picGaz.py``
 
