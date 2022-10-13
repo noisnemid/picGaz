@@ -96,6 +96,10 @@ class UNIQUE_PIC_COPY():
         for k,v in self.cfg.items():
             logging.info(f'{k} : {v}')
 
+        if not self.src.exists():
+            logging.error(f'SRC DOES NOT EXIST, TASK SKIPPED! {self.src}')
+            return
+        
         if not self.dst.exists():
             logging.warning(f'{self.dst} does not exist, creating...')
             os.makedirs(self.dst.absolute(), exist_ok=True)
