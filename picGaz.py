@@ -185,9 +185,7 @@ class UNIQUE_PIC_COPY():
         logging.info(f'GEN-HASH-FILE: {count} files found.')
         _cnt = 0
         _failed_cnt = 0
-        for i in range(0, count):
-            print(i)
-            f = files[i]
+        for f in files:
             fn = self.dst / f
             print(fn)
             f_stat = self.picEval(fn)
