@@ -116,7 +116,7 @@ class UNIQUE_PIC_COPY():
                 if hash_status > 1 or hash_status < 0:
                     logging.error(f'HASH FILE ERROR {hash_status}!')
 
-        logging.info('Pre-Check done, result {ck}')
+        logging.info(f'Pre-Check done, result {ck}')
         return ck
 
     def hashFileCheck(self) -> int:
