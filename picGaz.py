@@ -225,7 +225,7 @@ class UNIQUE_PIC_COPY():
             exit()
 
     def do(self):
-        if self.ready:
+        if self.ready == True:
             logging.info(f'Copying pics: {self.src} -> {self.dst} ...')
             _count = 0
             for i in os.listdir(self.src):
@@ -270,7 +270,7 @@ class UNIQUE_PIC_COPY():
         """
         r = {}
         try:
-            if file.exists():
+            if file.exists() == True:
                 ext = picExt(file)
                 if ext != '':
                     sz = Image.open(file).size
